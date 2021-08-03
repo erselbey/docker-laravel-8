@@ -1,0 +1,45 @@
+runtime: php74
+instance_class: F1 # GAE https://cloud.google.com/appengine/pricing
+service: your-project-name
+
+runtime_config:
+  document_root: public
+  enable_stackdriver_integration: true
+
+env_variables:
+  APP_KEY: YOUR-APP-KEY
+  APP_STORAGE: /tmp # This is a somewhat annoying point. After a little research, I was able to come up with a solution. So if you have any problems, you can write to me.
+  APP_ENV: production or staging
+  APP_DEBUG: true
+  VIEW_COMPILED_PATH: /tmp
+  SESSION_DRIVER: cookie
+
+  DB_HOST: your.sql.db.com
+  DB_DATABASE: db
+  DB_USERNAME: user
+  DB_PASSWORD: pass
+
+  MEMCACHED_HOST: 127.0.0.1
+
+# For automatic scaling, you need to choose standard environment. Example: F1
+automatic_scaling:
+  target_cpu_utilization: 0.95
+  min_instances: 1
+  max_instances: 2
+  min_pending_latency: 30ms
+  max_pending_latency: automatic
+  max_concurrent_requests: 50
+
+# This is the searched field for static
+handlers:
+- url: /stylesheets
+  static_dir: stylesheets
+
+- url: /(.*\.(gif|png|jpg|css|js|ttf|mp3))$
+  static_files: public/\1
+  upload: public/.*\.(gif|png|jpg|css|js|mp3|ttf)$
+
+- url: /images
+  static_dir: static/images
+  http_headers:
+          Access-Control-Allow-Origin: https://your.appengine-or-custom-domain.com

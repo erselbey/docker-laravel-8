@@ -101,3 +101,6 @@ docker-compose run --rm artisan migrate --seed
 ```sh
 docker-compose run --rm artisan passport:install
 ```
+### Google Cloud AppEngine Deploy
+
+gcloud app deploy 
